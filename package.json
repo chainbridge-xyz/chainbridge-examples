@@ -1,0 +1,19 @@
+{
+  "name": "chainbridge-examples",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Runnable examples for the ChainBridge SDK — a paid API and an agent that pays for it.",
+  "license": "MIT",
+  "type": "module",
+  "workspaces": [
+    "paid-api-seller",
+    "paid-api-consumer"
+  ],
+  "scripts": {
+    "seller": "npm start --workspace @chainbridge/example-paid-api-seller",
+    "consumer": "npm start --workspace @chainbridge/example-paid-api-consumer"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "name": "@chainbridge/example-paid-api-seller",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "An API that charges USDC per request via x402.",
+  "scripts": { "start": "node server.mjs" },
+  "dependencies": {
+    "@chainbridge/pay": "file:../../chainbridge/packages/pay",
+    "viem": "^2.21.0"
+  }
+}

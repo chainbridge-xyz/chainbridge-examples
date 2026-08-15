@@ -1,0 +1,25 @@
+# ───── Dependencies ─────
+node_modules/
+package-lock.json
+
+# ───── Environment / secrets ─────
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
+# ───── Logs ─────
+*.log
+npm-debug.log*
+
+# ───── Editors / IDEs ─────
+.vscode/
+.idea/
+*.swp
+.cursor/
+.claude/
+
+# ───── OS ─────
+.DS_Store
+Thumbs.db

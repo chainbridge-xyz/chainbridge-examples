@@ -1,0 +1,13 @@
+{
+  "name": "@chainbridge/example-paid-api-consumer",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "An agent that provisions a smart account and pays for an API call.",
+  "scripts": { "start": "node agent.mjs" },
+  "dependencies": {
+    "@chainbridge/pay": "file:../../chainbridge/packages/pay",
+    "@chainbridge/wallet": "file:../../chainbridge/packages/wallet",
+    "viem": "^2.21.0"
+  }
+}
