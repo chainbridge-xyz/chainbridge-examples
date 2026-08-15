@@ -11,7 +11,8 @@
   ],
   "scripts": {
     "seller": "npm start --workspace @chainbridge/example-paid-api-seller",
-    "consumer": "npm start --workspace @chainbridge/example-paid-api-consumer"
+    "consumer": "npm start --workspace @chainbridge/example-paid-api-consumer",
+    "smoke": "node scripts/smoke.mjs"
   },
   "engines": {
     "node": ">=18"

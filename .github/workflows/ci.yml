@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  # The SDK is what moves; these examples are what notice when it breaks.
+  # Nothing here pushes to this repo when that happens, so run daily as well
+  # as on our own commits.
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      # The examples resolve the packages through file:../../chainbridge/*,
+      # so the SDK has to be checked out as a sibling directory, not a subdir.
+      - uses: actions/checkout@v4
+        with:
+          path: chainbridge-examples
+
+      - uses: actions/checkout@v4
+        with:
+          repository: chainbridge-xyz/chainbridge
+          path: chainbridge
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Build the SDK
+        working-directory: chainbridge
+        run: |
+          npm install
+          npm run build
+
+      - name: Install the examples
+        working-directory: chainbridge-examples
+        run: npm install
+
+      # Checks every symbol the examples import still exists, and that the
+      # seller boots and quotes a price. Signing and settlement need real USDC,
+      # so they stay a manual run — see the README.
+      - name: Smoke test
+        working-directory: chainbridge-examples
+        run: npm run smoke

@@ -10,7 +10,15 @@
 
 Both are built on [`@chainbridge/pay`](https://github.com/chainbridge-xyz/chainbridge/tree/main/packages/pay)
 and [`@chainbridge/wallet`](https://github.com/chainbridge-xyz/chainbridge/tree/main/packages/wallet)
-from the [ChainBridge SDK](https://github.com/chainbridge-xyz/chainbridge).
+from the [ChainBridge SDK](https://github.com/chainbridge-xyz/chainbridge). The
+walkthrough version of this page, with diagrams, is at
+**[docs.chainbridge.dev/examples](https://docs.chainbridge.dev/examples)**.
+
+| Repo | What's there |
+|---|---|
+| [`chainbridge`](https://github.com/chainbridge-xyz/chainbridge) | The SDK — packages, contracts, blueprint, decision records. |
+| `chainbridge-examples` | This repo. |
+| [`chainbridge-docs`](https://github.com/chainbridge-xyz/chainbridge-docs) | The documentation site. |
 
 ## Setup
 
@@ -64,7 +72,18 @@ settling through a facilitator or a batch job instead
 
 Add `--provision` to the agent to deploy its smart account first
 (`npm run consumer -- --provision`). It's idempotent, so it's a no-op once
-deployed.
+deployed, and it's the only thing here that needs `PIMLICO_API_KEY`.
+
+### Without funds
+
+```bash
+npm run smoke
+```
+
+Checks that every symbol the examples import still exists and that the seller
+boots and quotes a price — no RPC, no key, no USDC. It's what CI runs, and it's
+the fast way to find out whether an SDK change broke these examples. Signing and
+settlement still need a real run.
 
 ## What a run looks like
 
@@ -111,6 +130,19 @@ this reason, and says so if it times out.
 
 If you're building a UI: the receipt is authoritative the moment you have it.
 The balance is not. Don't gate anything on a balance read.
+
+## When the SDK changes
+
+These examples are the first thing that notices a broken public API. They
+consume the packages as a customer does — through `file:` links to the built
+`dist/`, with no workspace resolution to paper over a missing export — so an SDK
+change that compiles and passes its own tests can still fail here.
+
+So after a change lands in `chainbridge` and its tests pass: rebuild the SDK, run
+`npm run smoke` here, then run both examples for real. Fix any drift before
+updating [the docs](https://github.com/chainbridge-xyz/chainbridge-docs), so the
+documentation describes what these examples actually proved. CI does the smoke
+half of that on every push and once a day.
 
 ## License
 

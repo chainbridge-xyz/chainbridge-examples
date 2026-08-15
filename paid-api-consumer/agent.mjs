@@ -26,6 +26,15 @@ if (!PRIVATE_KEY || !BASE_SEPOLIA_RPC) {
   process.exit(1);
 }
 
+// Only --provision talks to the bundler. Checked up front rather than left to
+// fail later: an unset key interpolates as "apikey=undefined" and comes back as
+// an opaque bundler rejection that reads like a problem with the UserOp.
+const provisioning = process.argv.includes("--provision");
+if (provisioning && !PIMLICO_API_KEY) {
+  console.error("--provision needs PIMLICO_API_KEY — free key at https://dashboard.pimlico.io");
+  process.exit(1);
+}
+
 const owner = privateKeyToAccount(PRIVATE_KEY);
 const publicClient = createPublicClient({ chain: baseSepolia, transport: http(BASE_SEPOLIA_RPC) });
 const walletClient = createWalletClient({ chain: baseSepolia, transport: http(BASE_SEPOLIA_RPC), account: owner });
@@ -70,7 +79,7 @@ if (usdc === 0n) {
   process.exit(1);
 }
 
-if (process.argv.includes("--provision")) {
+if (provisioning) {
   console.log("\nprovisioning smart account…");
   const p = await wallet.provision();
   console.log(p.alreadyDeployed
